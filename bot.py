@@ -1,26 +1,33 @@
 from aiohttp import web
 from plugins import web_server
-import time
-
 import pyromod.listen
 from pyrogram import Client
 from pyrogram.enums import ParseMode
 import sys
 from datetime import datetime
-
-from config import API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL_1, FORCE_SUB_CHANNEL_2, FORCE_SUB_CHANNEL_3, FORCE_SUB_CHANNEL_4, CHANNEL_IDS, PORT
+from config import (
+    API_HASH,
+    APP_ID,
+    LOGGER,
+    TG_BOT_TOKEN,
+    TG_BOT_WORKERS,
+    FORCE_SUB_CHANNEL_1,
+    FORCE_SUB_CHANNEL_2,
+    FORCE_SUB_CHANNEL_3,
+    FORCE_SUB_CHANNEL_4,
+    CHANNEL_IDS,
+    PORT
+)
 
 class Bot(Client):
     def __init__(self):
         super().__init__(
             name="Bot",
-            api_hash=API_HASH,
             api_id=APP_ID,
-            plugins={
-                "root": "plugins"
-            },
+            api_hash=API_HASH,
+            bot_token=TG_BOT_TOKEN,
             workers=TG_BOT_WORKERS,
-            bot_token=TG_BOT_TOKEN
+            plugins={"root": "plugins"}
         )
         self.LOGGER = LOGGER
 
@@ -29,6 +36,7 @@ class Bot(Client):
         usr_bot_me = await self.get_me()
         self.uptime = datetime.now()
 
+        # Force Subscription Channels - OLD STYLE
         if FORCE_SUB_CHANNEL_1:
             try:
                 link = (await self.get_chat(FORCE_SUB_CHANNEL_1)).invite_link
@@ -39,7 +47,7 @@ class Bot(Client):
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_1!")
-                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("Bot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
 
         if FORCE_SUB_CHANNEL_2:
@@ -52,7 +60,7 @@ class Bot(Client):
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_2!")
-                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("Bot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
 
         if FORCE_SUB_CHANNEL_3:
@@ -65,7 +73,7 @@ class Bot(Client):
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_3!")
-                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("Bot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
 
         if FORCE_SUB_CHANNEL_4:
@@ -78,43 +86,43 @@ class Bot(Client):
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
                 self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_4!")
-                self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
+                self.LOGGER(__name__).info("Bot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
 
+        # DB Channel Test
         try:
-            db_channel = await self.get_chat(CHANNEL_IDS[0])  # Fixed: use first channel only
+            db_channel = await self.get_chat(CHANNEL_IDS[0])
             self.db_channel = db_channel
-            test = await self.send_message(chat_id=db_channel.id, text="Test Message")
+            test = await self.send_message(chat_id=db_channel.id, text="✅ Bot is Online!")
             await test.delete()
         except Exception as e:
             self.LOGGER(__name__).warning(e)
             self.LOGGER(__name__).warning(f"Make sure the bot is admin in DB channel. CHANNEL_IDS: {CHANNEL_IDS}")
-            self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
+            self.LOGGER(__name__).info("Bot Stopped. Join https://t.me/weebs_support for support")
             sys.exit()
 
         self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(f"Bot Running..!\n\nCreated by \nhttps://t.me/CulturedTeluguweeb")
-        self.LOGGER(__name__).info(f"""       
 
+        self.username = usr_bot_me.username
+        self.LOGGER(__name__).info(f"Bot Running as @{self.username}")
+        self.LOGGER(__name__).info(f"Created by https://t.me/CulturedTeluguweeb")
 
+        # Fancy ASCII Banner
+        self.LOGGER(__name__).info(r"""
   ┈┈┈╱▔▔▔▔▔▔╲┈╭━━━━━━━╮┈┈
-┈┈▕┈╭━╮╭━╮┈▏┃𝕎𝕖𝕖𝕜𝕖𝕟𝕕𝕤𝔹𝕠𝕥𝕫
+┈┈▕┈╭━╮╭━╮┈▏┃ℝ𝕒𝕧𝕚 𝔹𝕠𝕥
 ┈┈▕┈┃╭╯╰╮┃┈▏╰┳━━━━━━╯┈┈
 ┈┈▕┈╰╯╭╮╰╯┈▏┈┃┈┈┈┈┈
 ┈┈▕┈┈┈┃┃┈┈┈▏━╯┈┈┈┈┈
 ┈┈▕┈┈┈╰╯┈┈┈▏┈┈┈┈┈┈┈
 ┈┈▕╱╲╱╲╱╲╱╲▏┈┈┈┈┈┈┈
-                                                         
+""")
 
-        """)
 
-        self.username = usr_bot_me.username
-
-        # Start aiohttp web server (for Koyeb health checks etc.)
+        # Start web server
         app = web.AppRunner(await web_server())
         await app.setup()
-        bind_address = "0.0.0.0"
-        await web.TCPSite(app, bind_address, PORT).start()
+        await web.TCPSite(app, "0.0.0.0", PORT).start()
 
     async def stop(self, *args):
         await super().stop()

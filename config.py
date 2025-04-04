@@ -1,5 +1,3 @@
-#(©) WeekendsBotz
-
 import os
 import logging
 from dotenv import load_dotenv
@@ -7,74 +5,77 @@ from logging.handlers import RotatingFileHandler
 
 load_dotenv()
 
-#Bot token @Botfather
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7988129609:AAHIJGSZm2-Ryso22AR4X5s05ZF-HaMmfuc") 
+# Telegram Bot Token from @BotFather
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN")
 
-#Your API ID from my.telegram.org
-APP_ID = int(os.environ.get("APP_ID", "24500584"))
+# Telegram API ID and Hash from https://my.telegram.org
+APP_ID = int(os.environ.get("APP_ID", "123456"))
+API_HASH = os.environ.get("API_HASH")
 
-#Your API Hash from my.telegram.org
-API_HASH = os.environ.get("API_HASH", "449da69cf4081dc2cc74eea828d0c490")
+# Channel IDs (comma-separated) for storing files
+CHANNEL_IDS = os.environ.get("CHANNEL_IDS", "").split(",")
+CHANNEL_IDS = [int(cid.strip()) for cid in CHANNEL_IDS if cid.strip()]
 
-#Your db channel Id
-CHANNEL_IDS = os.environ.get("CHANNEL_IDS", "-1002437344784,-1002448203068").split(",")
-CHANNEL_IDS = [int(cid.strip()) for cid in CHANNEL_IDS]
+# Bot Owner ID
+OWNER_ID = int(os.environ.get("OWNER_ID", "123456789"))
 
-#OWNER ID
-OWNER_ID = int(os.environ.get("OWNER_ID", "1047253913"))
+# Port for web server (Koyeb uses 0.0.0.0:$PORT)
+PORT = int(os.environ.get("PORT", "8000"))
 
-#Port
-PORT = os.environ.get("PORT", "8000")
+# MongoDB Configuration
+DB_URI = os.environ.get("DATABASE_URL")
+DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0")
 
-#Database 
-DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://erenyeagermikasa84:pkbOXb3ulzi9cEFd@cluster0.ingt8mt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-DB_NAME = os.environ.get("DATABASE_NAME", "Cluster0") 
+# Force Subscription Channels
+FORCE_SUB_CHANNEL_1 = int(os.environ.get("FORCE_SUB_CHANNEL_1", "0"))
+FORCE_SUB_CHANNEL_2 = int(os.environ.get("FORCE_SUB_CHANNEL_2", "0"))
+FORCE_SUB_CHANNEL_3 = int(os.environ.get("FORCE_SUB_CHANNEL_3", "0"))
+FORCE_SUB_CHANNEL_4 = int(os.environ.get("FORCE_SUB_CHANNEL_4", "0"))
 
-
-JOIN_REQUEST_ENABLE = os.environ.get("JOIN_REQUEST_ENABLED", None)
-#force sub channel id, if you want enable force sub
-FORCE_SUB_CHANNEL_1 = int(os.environ.get("FORCE_SUB_CHANNEL_1", "-1002650862527"))
-FORCE_SUB_CHANNEL_2 = int(os.environ.get("FORCE_SUB_CHANNEL_2", "-1002331321194"))
-FORCE_SUB_CHANNEL_3 = int(os.environ.get("FORCE_SUB_CHANNEL_3", "-1001646925412")) 
-FORCE_SUB_CHANNEL_4 = int(os.environ.get("FORCE_SUB_CHANNEL_4", "-1002244170363"))
-
+# Number of workers for the bot
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
-#start message
-START_PIC = os.environ.get("START_PIC","https://envs.sh/nA8.jpg")
-START_MSG = os.environ.get("START_MESSAGE", "ᴋᴏɴɪᴄʜɪᴡᴀ {mention}\n\n<blockquote>ᴋᴏɴɪᴄʜɪᴡᴀ ɪ ᴄᴀɴ sᴛᴏʀᴇ ᴀɴɪᴍᴇ/ᴍᴏᴠɪᴇ ғɪʟᴇs ɪɴ @Anime_Weekends ᴄʜᴀɴɴᴇʟ  ᴀɴᴅ ᴏᴛʜᴇʀ ᴜsᴇʀs ᴄᴀɴ ᴀᴄᴄᴇss ɪᴛ ғʀᴏᴍ sᴘᴇᴄɪᴀʟ ʟɪɴᴋ.</blockquote>")
+# Join Request Feature Toggle
+JOIN_REQUEST_ENABLE = os.environ.get("JOIN_REQUEST_ENABLED", None)
+
+# Start Message and Picture
+START_PIC = os.environ.get("START_PIC", "https://envs.sh/nA8.jpg")
+START_MSG = os.environ.get("START_MESSAGE", "ᴋᴏɴɪᴄʜɪᴡᴀ {mention}\n\n<blockquote>ɪ ᴄᴀɴ sᴛᴏʀᴇ ғɪʟᴇs ғᴏʀ ʏᴏᴜ!</blockquote>")
+
+# Admins List
+ADMINS = []
 try:
-    ADMINS=[]
-    for x in (os.environ.get("ADMINS", "6429532957 6266529037").split()):
+    for x in os.environ.get("ADMINS", "").split():
         ADMINS.append(int(x))
 except ValueError:
-        raise Exception("Your Admins list does not contain valid integers.")
-
-#Force sub message 
-FORCE_PIC = os.environ.get("FORCE_PIC", "https://i.ibb.co/39pdz7yv/x.jpg")
-
-FORCE_MSG = os.environ.get("FORCE_SUB_MESSAGE", "ᴀʀᴀ ᴀʀᴀ!! {mention}\n\n<b><blockquote>ᴀʀᴀ ʏᴏᴜ'ʀᴇ ᴍɪssɪɴɢ ᴏᴜᴛ ᴏɴ sᴏᴍᴇ sᴇʀɪᴏᴜs ᴀᴄᴛɪᴏɴ.ᴛo ᴜɴʟᴏᴄᴋ ᴀʟʟ ғᴇᴀᴛᴜʀᴇs ᴀɴᴅ ᴀᴄᴄᴇss ғɪʟᴇs, ᴊᴏɪɴ ᴀʟʟ of ᴏᴜʀ ᴄʜᴀɴɴᴇʟs ʙᴇʟᴏᴡ: !</blockquote></b>")
-
-#set your Custom Caption here, Keep None for Disable Custom Caption
-CUSTOM_CAPTION = os.environ.get("@CulturedTeluguweeb")
-
-#set True if you want to prevent users from forwarding files from bot
-PROTECT_CONTENT = False if os.environ.get('PROTECT_CONTENT', "False") == "True" else False
-
-# Auto delete time in seconds.
-AUTO_DELETE_TIME = int(os.getenv("AUTO_DELETE_TIME", "1000"))
-AUTO_DELETE_MSG = os.environ.get("AUTO_DELETE_MSG", "⚠️ Dᴜᴇ ᴛᴏ Cᴏᴘʏʀɪɢʜᴛ ɪssᴜᴇs....\n\n<blockquote>This file will be automatically deleted in {time} seconds. Please ensure you have saved any necessary content before this time.</blockquote>")
-AUTO_DEL_SUCCESS_MSG = os.environ.get("AUTO_DEL_SUCCESS_MSG", "<blockquote>уσυя fιℓє нαѕ вєєи ѕυccєѕѕfυℓℓу ∂єℓєтє∂! ♻️</blockquote>")
-
-#Set true if you want Disable your Channel Posts Share button
-DISABLE_CHANNEL_BUTTON = os.environ.get("DISABLE_CHANNEL_BUTTON", None) == 'False'
-
-BOT_STATS_TEXT = "<b><blockquote>BOT UPTIME</b>\n{uptime}</blockquote>"
-USER_REPLY_TEXT = "<blockquote>ᴀʀᴀ!! ᴀʀᴀ!! ɪᴀᴍ ᴏɴʟʏ ᴡᴏʀᴋ ғᴏʀ ᴍʏ ʟᴏᴠᴇʟʏ ᴋᴀᴡᴀɪɪ 🥰 @CulturedTeluguweeb !</blockquote>"
+    raise Exception("Your ADMINS list contains invalid values.")
 
 ADMINS.append(OWNER_ID)
-ADMINS.append(6266529037)
+ADMINS.append(6266529037)  # Backup admin or dev ID
 
+# Force Subscribe Message and Picture
+FORCE_PIC = os.environ.get("FORCE_PIC", "https://i.ibb.co/39pdz7yv/x.jpg")
+FORCE_MSG = os.environ.get("FORCE_SUB_MESSAGE", "ᴀʀᴀ {mention}\n\n<blockquote>ᴘʟᴇᴀsᴇ ᴊᴏɪɴ ᴏᴜʀ ᴄʜᴀɴɴᴇʟs ᴛᴏ ᴜɴʟᴏᴄᴋ ᴀᴄᴄᴇss!</blockquote>")
+
+# Custom Caption Support
+CUSTOM_CAPTION = os.environ.get("CUSTOM_CAPTION", None)
+
+# Protect forwarded files
+PROTECT_CONTENT = os.environ.get("PROTECT_CONTENT", "False").lower() == "true"
+
+# Auto Delete Message Settings
+AUTO_DELETE_TIME = int(os.environ.get("AUTO_DELETE_TIME", "1000"))
+AUTO_DELETE_MSG = os.environ.get("AUTO_DELETE_MSG", "⚠️ Tʜɪs ғɪʟᴇ ᴡɪʟʟ ʙᴇ ᴀᴜᴛᴏ-ᴅᴇʟᴇᴛᴇᴅ ɪɴ {time} sᴇᴄᴏɴᴅs.")
+AUTO_DEL_SUCCESS_MSG = os.environ.get("AUTO_DEL_SUCCESS_MSG", "✅ Fɪʟᴇ ᴅᴇʟᴇᴛᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ.")
+
+# Disable share button in channel posts
+DISABLE_CHANNEL_BUTTON = os.environ.get("DISABLE_CHANNEL_BUTTON", "False").lower() == "true"
+
+# Stats Text
+BOT_STATS_TEXT = "<b><blockquote>BOT UPTIME</b>\n{uptime}</blockquote>"
+USER_REPLY_TEXT = "<blockquote>ᴀʀᴀ!! I ᴏɴʟʏ sᴇʀᴠᴇ @CulturedTeluguweeb</blockquote>"
+
+# Logging Setup
 LOG_FILE_NAME = "filesharingbot.txt"
 
 logging.basicConfig(
@@ -82,14 +83,11 @@ logging.basicConfig(
     format="[%(asctime)s - %(levelname)s] - %(name)s - %(message)s",
     datefmt='%d-%b-%y %H:%M:%S',
     handlers=[
-        RotatingFileHandler(
-            LOG_FILE_NAME,
-            maxBytes=50000000,
-            backupCount=10
-        ),
+        RotatingFileHandler(LOG_FILE_NAME, maxBytes=50_000_000, backupCount=10),
         logging.StreamHandler()
     ]
 )
+
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 def LOGGER(name: str) -> logging.Logger:

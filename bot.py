@@ -38,10 +38,10 @@ class Bot(Client):
                 self.invitelink = link
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL_1 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL_1}")
+                self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_1!")
                 self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
+
         if FORCE_SUB_CHANNEL_2:
             try:
                 link = (await self.get_chat(FORCE_SUB_CHANNEL_2)).invite_link
@@ -51,10 +51,10 @@ class Bot(Client):
                 self.invitelink2 = link
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL_2 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL_2}")
+                self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_2!")
                 self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
+
         if FORCE_SUB_CHANNEL_3:
             try:
                 link = (await self.get_chat(FORCE_SUB_CHANNEL_3)).invite_link
@@ -64,10 +64,10 @@ class Bot(Client):
                 self.invitelink3 = link
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL_3 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL_3}")
+                self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_3!")
                 self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
+
         if FORCE_SUB_CHANNEL_4:
             try:
                 link = (await self.get_chat(FORCE_SUB_CHANNEL_4)).invite_link
@@ -77,18 +77,18 @@ class Bot(Client):
                 self.invitelink4 = link
             except Exception as a:
                 self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL_4 value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL_4}")
+                self.LOGGER(__name__).warning("Bot can't Export Invite link from FORCE_SUB_CHANNEL_4!")
                 self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
                 sys.exit()
+
         try:
-            db_channel = await self.get_chat(CHANNEL_IDS)
+            db_channel = await self.get_chat(CHANNEL_IDS[0])  # Fixed: use first channel only
             self.db_channel = db_channel
-            test = await self.send_message(chat_id = db_channel.id, text = "Test Message")
+            test = await self.send_message(chat_id=db_channel.id, text="Test Message")
             await test.delete()
         except Exception as e:
             self.LOGGER(__name__).warning(e)
-            self.LOGGER(__name__).warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_IDS Value, Current Value {CHANNEL_IDS}")
+            self.LOGGER(__name__).warning(f"Make sure the bot is admin in DB channel. CHANNEL_IDS: {CHANNEL_IDS}")
             self.LOGGER(__name__).info("\nBot Stopped. Join https://t.me/weebs_support for support")
             sys.exit()
 
@@ -105,10 +105,12 @@ class Bot(Client):
 ┈┈▕┈┈┈╰╯┈┈┈▏┈┈┈┈┈┈┈
 ┈┈▕╱╲╱╲╱╲╱╲▏┈┈┈┈┈┈┈
                                                          
- 
-                                          """)
+
+        """)
+
         self.username = usr_bot_me.username
-        #web-response
+
+        # Start aiohttp web server (for Koyeb health checks etc.)
         app = web.AppRunner(await web_server())
         await app.setup()
         bind_address = "0.0.0.0"

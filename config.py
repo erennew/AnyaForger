@@ -10,7 +10,7 @@ load_dotenv()
 # 🍪 Waku waku! Anya's bot configuration for world peace! 💖
 
 # Bot token from @Botfather (Anya's secret code)
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7988129609:AAHIJGSZm2-Ryso22AR4X5s05ZF-HaMmfuc")
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "1599848664:AAHc75il2BECWK39tiPv4pVf-gZdPt4MFcw")
 
 # API credentials from my.telegram.org (For WISE operations)
 APP_ID = int(os.environ.get("APP_ID", "24500584"))

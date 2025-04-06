@@ -22,11 +22,28 @@ ANYA_WAIT = [
 ANYA_ERROR = "😵‍💫 Mission failed! Anya couldn't find them..."
 
 async def create_invite_links(client: Client):
-    invite1 = await client.create_chat_invite_link(chat_id=FORCE_SUB_CHANNEL_1, creates_join_request=True)
-    invite2 = await client.create_chat_invite_link(chat_id=FORCE_SUB_CHANNEL_2, creates_join_request=True)
-    invite3 = await client.create_chat_invite_link(chat_id=FORCE_SUB_CHANNEL_3, creates_join_request=True)
-    invite4 = await client.create_chat_invite_link(chat_id=FORCE_SUB_CHANNEL_4, creates_join_request=True)
-    return invite1, invite2, invite3, invite4
+    """Create join request links for all force sub channels"""
+    links = {}
+    channels = {
+        1: FORCE_SUB_CHANNEL_1,
+        2: FORCE_SUB_CHANNEL_2,
+        3: FORCE_SUB_CHANNEL_3,
+        4: FORCE_SUB_CHANNEL_4
+    }
+    
+    for num, channel in channels.items():
+        if channel:
+            try:
+                invite = await client.create_chat_invite_link(
+                    chat_id=channel,
+                    creates_join_request=JOIN_REQUEST_ENABLE
+                )
+                links[f"invitelink{'' if num == 1 else num}"] = invite.invite_link
+                links[f"join_request_{num}"] = invite if JOIN_REQUEST_ENABLE else None
+            except Exception as e:
+                print(f"Error creating invite link for channel {num}: {e}")
+                raise
+    return links
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
@@ -34,9 +51,9 @@ async def start_command(client: Client, message: Message):
     if not await present_user(id):
         try:
             await add_user(id)
-        except:
-            pass
-    
+        except Exception as e:
+            print(f"Error adding user: {e}")
+
     text = message.text
     if len(text) > 7:
         try:
@@ -104,21 +121,21 @@ async def start_command(client: Client, message: Message):
                             reply_markup=reply_markup,
                             protect_content=PROTECT_CONTENT
                         )
-                except:
+                except Exception as e:
+                    print(f"Error sending file: {e}")
                     await message.reply_text(f"<blockquote>{ANYA_ERROR}</blockquote>")
                     return
 
             if track_msgs:
                 delete_data = await client.send_message(
                     chat_id=message.from_user.id,
-                    text=f"🗑️ Files will disappear in {AUTO_DELETE_TIME} seconds! For world peace!"
+                    text=AUTO_DELETE_MSG.format(time=AUTO_DELETE_TIME)
                 )
                 asyncio.create_task(delete_file(track_msgs, client, delete_data))
                 
-        except:
+        except Exception as e:
+            print(f"Error in start command: {e}")
             await message.reply_text(f"<blockquote>{ANYA_ERROR}</blockquote>")
-            return
-            
     else:
         reply_markup = InlineKeyboardMarkup([
             [InlineKeyboardButton("🍪 About Anya", callback_data="about"),
@@ -154,16 +171,21 @@ async def start_command(client: Client, message: Message):
 
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(client: Client, message: Message):
-    invite1, invite2, invite3, invite4 = await create_invite_links(client)
+    try:
+        links = await create_invite_links(client)
+    except Exception as e:
+        await message.reply_text("🍪 Anya can't create invite links right now. Try again later!")
+        print(f"Error creating invite links: {e}")
+        return
 
     buttons = [
         [
-            InlineKeyboardButton("🍪 Anya's Club", url=invite1.invite_link),
-            InlineKeyboardButton("🦁 Bond's Den", url=invite2.invite_link)
+            InlineKeyboardButton("🍪 Peanut Club", url=links.get("invitelink", "#")),
+            InlineKeyboardButton("🦁 Bond's Den", url=links.get("invitelink2", "#"))
         ],
         [
-            InlineKeyboardButton("🎭 Spy Network", url=invite3.invite_link),
-            InlineKeyboardButton("💖 Assassin Guild", url=invite4.invite_link)
+            InlineKeyboardButton("🎭 Spy Network", url=links.get("invitelink3", "#")),
+            InlineKeyboardButton("💖 Assassin Guild", url=links.get("invitelink4", "#"))
         ]
     ]
     
@@ -234,7 +256,8 @@ async def send_text(client: Bot, message: Message):
             except InputUserDeactivated:
                 await del_user(user_id)
                 stats["deleted"] += 1
-            except:
+            except Exception as e:
+                print(f"Broadcast error for {user_id}: {e}")
                 stats["failed"] += 1
             stats["total"] += 1
 

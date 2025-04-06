@@ -180,12 +180,12 @@ async def not_joined(client: Client, message: Message):
 
     buttons = [
         [
-            InlineKeyboardButton("🍪 Peanut Club", url=links.get("invitelink", "#")),
-            InlineKeyboardButton("🦁 Bond's Den", url=links.get("invitelink2", "#"))
+            InlineKeyboardButton("🗄️ Main Vault", url=links.get("invitelink", "#")),
+            InlineKeyboardButton("⚙️ Ongoing Machines", url=links.get("invitelink2", "#"))
         ],
         [
-            InlineKeyboardButton("🎭 Spy Network", url=links.get("invitelink3", "#")),
-            InlineKeyboardButton("💖 Assassin Guild", url=links.get("invitelink4", "#"))
+            InlineKeyboardButton("📼 Vintage", url=links.get("invitelink3", "#")),
+            InlineKeyboardButton("🎯 Completed Ops", url=links.get("invitelink4", "#"))
         ]
     ]
     

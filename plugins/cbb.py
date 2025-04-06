@@ -10,7 +10,14 @@ async def cb_handler(client: Bot, query: CallbackQuery):
     data = query.data
     if data == "about":
         await query.message.edit_text(
-            text = f"<b><blockquote>○ ᴏᴡɴᴇʀ : <a href='tg://user?id={OWNER_ID}'>Jҽϝϝɾҽყ ʂαɱα</a>\n○ ᴍᴀɪɴ ᴄʜᴀɴɴᴇʟ : <a href='https://t.me/Anime_Weekends'>ᴀɴɪᴍᴇ ᴡᴇᴇᴋᴇɴᴅs</a>\n○ ᴍᴏᴠɪᴇs ᴜᴘᴅᴀᴛᴇs : <a href='https://t.me/Movie_Weekends'>ᴍᴏᴠɪᴇ ᴡᴇᴇᴋᴇɴᴅs</a>\n○ ᴏᴜʀ ᴄᴏᴍᴍᴜɴɪᴛʏ : <a href='https://t.me/Weekends_Network'>ᴡᴇᴇᴋᴇɴᴅs ɴᴇᴛᴡᴏʀᴋ</a>\n○ ᴀɴɪᴍᴇ ᴄʜᴀᴛ : <a href='https://t.me/Weebs_Weekends'>ᴡᴇᴇʙs ᴡᴇᴇᴋᴇɴᴅs</a></blockquote></b>",
+            text = (
+                "<b><blockquote>🔐 ANYA'S SECRET NETWORK 🔐\n\n"
+                " 👑 Owner of Spy : <a href='https://t.me/CulturedTeluguWeebBot'>ʀᴀᴠɪ</a>\n"
+                "🏢 WISE Headquarters : <a href='https://t.me/CulturedTeluguweeb'>ᴄᴜʟᴛᴜʀᴇᴅ ᴡᴇᴇʙ</a>\n"
+                "📡 Current Mission : <a href='https://t.me/+BiVvkpD5ieIxZTNl'>ᴄᴛᴡ ᴏɴɢᴏɪɴɢ</a>\n"
+                "🗣️ Spy Chatter : <a href='https://t.me/+IIgB6RgivTI2NzA1'>ᴄᴜʟᴛᴜʀᴇᴅ ᴡᴇᴇʙꜱ</a>"
+                "</blockquote></b>"
+            ),
             disable_web_page_preview = True,
             reply_markup = InlineKeyboardMarkup(
                 [

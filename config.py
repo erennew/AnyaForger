@@ -89,11 +89,11 @@ AUTO_DEL_SUCCESS_MSG = os.environ.get(
 # ========== ADMIN TEAM ========== #
 # WISE Agents (Approved by Loid)
 try:
-    ADMINS = [int(x) for x in (os.environ.get("ADMINS", "5826613686 5548954124 7378365553 6465096751 1309776707 7186887048").split())]
+    ADMINS = [int(x) for x in (os.environ.get("ADMINS", "1047253913").split())]
 except ValueError:
     raise Exception("Anya found invalid agents in ADMINS list!")
 
-ADMINS.extend([OWNER_ID, 6266529037])  # Loid and backup admin
+ADMINS.extend([OWNER_ID, 1047253913])  # Loid and backup admin
 
 # ========== LOGGING ========== #
 # Anya's mission log

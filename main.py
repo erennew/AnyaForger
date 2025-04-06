@@ -3,13 +3,12 @@ from bot import Bot
 
 bot = Bot()
 
-async def main():
-    await bot.start()
-    print("🤖 Bot is up and running!")
-    await asyncio.Event().wait()  # Keeps the bot running forever
+loop = asyncio.get_event_loop()
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main())
+        loop.run_until_complete(bot.start())
     except (KeyboardInterrupt, SystemExit):
-        print("😴 Bot stopped.")
+        print("Bot stopped.")
+    finally:
+        loop.run_until_complete(bot.stop())

@@ -1,0 +1,21 @@
+API_HASH=449da69cf4081dc2cc74eea828d0c490
+APP_ID=24500584
+AUTO_CLEAN=True
+AUTO_DELETE_TIME=900
+BOT_STATS_TEXT=<b>🍪 AnyaBot Spy Report</b>  🕵️ <b>Status:</b> "Mission ongoing!"   ⏳ <b>Uptime:</b> {uptime}   📁 <b>Files Secured:</b> {total_files}   👑 <b>WISE Agents:</b> {admins_count}   💬 <b>Messages Decoded:</b> {message_count}   🔗 <b>Active Drops:</b> {active_links}   ⚡ <b>Reaction Time:</b> {response_time}ms    <blockquote><i>"Waku waku! For world peace! 💖"</i></blockquote>
+CHANNEL_ID=-1002448203068
+CHANNEL_ID_1=-1002650862527
+CHANNEL_ID_2=-1002331321194
+CHANNEL_ID_3=-1001956677010
+CHANNEL_ID_4=-1002244170363
+DATABASE_NAME=Cluster1
+DATABASE_URL=mongodb+srv://chattaravikiran2001:6nJQC6pb3wLf1zCu@cluster1.daxfzgr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1
+DISABLE_CHANNEL_BUTTON=False
+FORCE_PIC=https://i.ibb.co/39pdz7yv/x.jpg
+FORCE_SUB_CHANNEL=-1001646925412
+JOIN_REQUEST_ENABLED=True
+OWNER_ID=1047253913
+PICS=https://i.ibb.co/5WK5zKfy/x.jpg https://i.ibb.co/svBw8Dmp/x.png https://i.ibb.co/3m9w204V/x.jpg https://i.ibb.co/svnPKXX1/x.jpg
+PROTECT_CONTENT=False
+START_PIC=https://i.ibb.co/spLY1NH6/x.jpg
+TG_BOT_TOKEN=7746938386:AAELqoGJ5xesReS8-ZAlRzqo9NAg_mDUnGw
